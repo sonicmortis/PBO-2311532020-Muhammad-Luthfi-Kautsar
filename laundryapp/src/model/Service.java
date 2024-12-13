@@ -1,43 +1,37 @@
 package model;
 
 public class Service {
-	private int id;
-    private String jenis;
-    private double harga;
-    private boolean status;
+	String id, jenis, harga, status;
 
-    // Getter dan Setter
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String getJenis() {
-        return jenis;
-    }
-    public void setJenis(String jenis)
- {
-        this.jenis = jenis;
-    }
-    public double getHarga() {
-        return harga;
-    }
-    public void setHarga(double harga) {
-        this.harga = harga;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public boolean getStatus() {
-        return status;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-    public void tampilInfo() {
-        System.out.println("ID Service: " + id);
-        System.out.println("Jenis Service: " + jenis);
-        System.out.println("Harga: Rp " + harga);
-        System.out.println("Status: " + (status ? "Tersedia" : "Tidak Tersedia"));
-    }
+	public String getJenis() {
+		return jenis;
+	}
+
+	public void setJenis(String jenis) {
+		this.jenis = jenis;
+	}
+
+	public String getHarga() {
+		return harga;
+	}
+
+	public void setHarga(String harga) {
+		this.harga = harga;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

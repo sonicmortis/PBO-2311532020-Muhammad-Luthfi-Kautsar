@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -45,28 +46,60 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitle = new JLabel("Laundry Apps");
+		JLabel lblTitle = new JLabel("LAUNDRY ALEXANDRE");
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblTitle.setBounds(10, 21, 416, 38);
 		contentPane.add(lblTitle);
 		
 		JButton btnOrder = new JButton("Order");
+		btnOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OrderFrame of = new OrderFrame();
+				of.setVisible(true);
+				of.loadTableOrder();
+				dispose();
+			}
+		});
 		btnOrder.setFont(new Font("SansSerif", Font.BOLD, 14));
 		btnOrder.setBounds(10, 79, 121, 47);
 		contentPane.add(btnOrder);
 		
 		JButton btnService = new JButton("Service");
+		btnService.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ServiceFrame sf = new ServiceFrame();
+				sf.setVisible(true);
+				sf.loadTable();
+				dispose();
+			}
+		});
 		btnService.setFont(new Font("SansSerif", Font.BOLD, 14));
 		btnService.setBounds(159, 79, 121, 47);
 		contentPane.add(btnService);
 		
 		JButton btnCustomer = new JButton("Customer");
+		btnCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CustomerFrame cf = new CustomerFrame();
+				cf.setVisible(true);
+				cf.loadTable();
+				dispose();
+			}
+		});
 		btnCustomer.setFont(new Font("SansSerif", Font.BOLD, 14));
 		btnCustomer.setBounds(305, 79, 121, 47);
 		contentPane.add(btnCustomer);
 		
 		JButton btnUser = new JButton("User");
+		btnUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserFrame uf = new UserFrame();
+				uf.setVisible(true);
+				uf.loadTable();
+				dispose();
+			}
+		});
 		btnUser.setFont(new Font("SansSerif", Font.BOLD, 14));
 		btnUser.setBounds(10, 136, 121, 47);
 		contentPane.add(btnUser);
@@ -81,7 +114,7 @@ public class MainFrame extends JFrame {
 		btnProfile.setBounds(305, 136, 121, 47);
 		contentPane.add(btnProfile);
 		
-		JButton btnBack = new JButton("Back");
+		JButton btnBack = new JButton("Logout");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				LoginFrame lf = new LoginFrame();
@@ -90,7 +123,8 @@ public class MainFrame extends JFrame {
 			}
 		});
 		btnBack.setFont(new Font("SansSerif", Font.BOLD, 14));
-		btnBack.setBounds(10, 208, 416, 33);
+		btnBack.setBackground(new Color(192, 192, 192));
+		btnBack.setBounds(337, 226, 89, 27);
 		contentPane.add(btnBack);
 	}
 

@@ -5,22 +5,51 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import DAO.UserRepo;
+import model.User;
+import table.TableUser;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
-import java.awt.TextField;
+import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.Color;
-import javax.swing.JRadioButton;
-import java.awt.SystemColor;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.awt.event.ActionEvent;
 import javax.swing.JTable;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Color;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class UserFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTable table;
-	private JTable table_1;
-
+	private JTextField txtUsername;
+	private JTextField txtPassword;
+	private JTextField txtName;
+	private JTable tableUsers;
+	
+	UserRepo usr = new UserRepo();
+	List<User> ls;
+	String id;
+	
+	public void reset() {
+		txtName.setText("");
+		txtUsername.setText("");
+		txtPassword.setText("");
+	}
+	public void loadTable() {
+		ls = usr.show();
+		TableUser tu = new TableUser(ls);
+		tableUsers.setModel(tu);;
+		tableUsers.getTableHeader().setVisible(true);
+	}
 	/**
 	 * Launch the application.
 	 */
@@ -30,6 +59,7 @@ public class UserFrame extends JFrame {
 				try {
 					UserFrame frame = new UserFrame();
 					frame.setVisible(true);
+					frame.loadTable();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -42,67 +72,133 @@ public class UserFrame extends JFrame {
 	 */
 	public UserFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 505, 514);
+		setBounds(100, 100, 450, 479);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Name");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		lblNewLabel.setBounds(37, 42, 45, 13);
-		contentPane.add(lblNewLabel);
-		
 		JLabel lblUsername = new JLabel("Username");
-		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		lblUsername.setBounds(37, 81, 97, 13);
+		lblUsername.setFont(new Font("SansSerif", Font.BOLD, 12));
+		lblUsername.setBounds(10, 82, 92, 25);
 		contentPane.add(lblUsername);
 		
+		txtUsername = new JTextField();
+		txtUsername.setFont(new Font("SansSerif", Font.BOLD, 12));
+		txtUsername.setColumns(10);
+		txtUsername.setBounds(112, 82, 314, 25);
+		contentPane.add(txtUsername);
+		
 		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		lblPassword.setBounds(37, 118, 97, 13);
+		lblPassword.setFont(new Font("SansSerif", Font.BOLD, 12));
+		lblPassword.setBounds(10, 117, 92, 25);
 		contentPane.add(lblPassword);
 		
-		TextField textField = new TextField();
-		textField.setBounds(132, 42, 309, 21);
-		contentPane.add(textField);
+		txtPassword = new JTextField();
+		txtPassword.setFont(new Font("SansSerif", Font.BOLD, 12));
+		txtPassword.setColumns(10);
+		txtPassword.setBounds(112, 121, 314, 25);
+		contentPane.add(txtPassword);
 		
-		TextField textField_1 = new TextField();
-		textField_1.setBounds(132, 81, 309, 21);
-		contentPane.add(textField_1);
+		JLabel lblName = new JLabel("Name");
+		lblName.setFont(new Font("SansSerif", Font.BOLD, 12));
+		lblName.setBounds(10, 45, 92, 25);
+		contentPane.add(lblName);
 		
-		TextField textField_2 = new TextField();
-		textField_2.setBounds(132, 118, 309, 21);
-		contentPane.add(textField_2);
+		txtName = new JTextField();
+		txtName.setFont(new Font("SansSerif", Font.BOLD, 12));
+		txtName.setColumns(10);
+		txtName.setBounds(112, 45, 314, 25);
+		contentPane.add(txtName);
 		
-		JButton btnNewButton = new JButton("Save");
-		btnNewButton.setForeground(new Color(0, 0, 0));
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnNewButton.setBounds(37, 174, 90, 38);
-		contentPane.add(btnNewButton);
+		JButton btnSave = new JButton("Save");
+		btnSave.setBackground(new Color(0, 255, 0));
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				User user = new User();
+				user.setNama(txtName.getText());
+				user.setUsername(txtUsername.getText());
+				user.setPassword(txtPassword.getText());
+				reset();
+				usr.save(user);
+				loadTable();
+			}
+		});
+		btnSave.setFont(new Font("SansSerif", Font.BOLD, 12));
+		btnSave.setBounds(193, 156, 75, 25);
+		contentPane.add(btnSave);
 		
-		JButton btnUpdate = new JButton("Update");
-		btnUpdate.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnUpdate.setBounds(139, 174, 90, 38);
-		contentPane.add(btnUpdate);
-		
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnDelete.setBounds(245, 174, 90, 38);
-		contentPane.add(btnDelete);
-		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnCancel.setBounds(357, 174, 90, 38);
+		JButton btnCancel = new JButton("Back");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainFrame mf = new MainFrame();
+				mf.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancel.setBackground(new Color(192, 192, 192));
+		btnCancel.setFont(new Font("SansSerif", Font.BOLD, 12));
+		btnCancel.setBounds(10, 156, 75, 25);
 		contentPane.add(btnCancel);
 		
-		table = new JTable();
-		table.setBounds(37, 261, 9, 0);
-		contentPane.add(table);
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(id != null) {
+					usr.delete(id);
+					reset();
+					loadTable();
+				}else {
+					JOptionPane.showMessageDialog(null, "Silahkan pilih data yang akan di hapus");
+				}
+			}
+		});
+		btnDelete.setBackground(new Color(255, 0, 0));
+		btnDelete.setFont(new Font("SansSerif", Font.BOLD, 12));
+		btnDelete.setBounds(351, 156, 75, 25);
+		contentPane.add(btnDelete);
 		
-		table_1 = new JTable();
-		table_1.setBounds(37, 222, 411, 226);
-		contentPane.add(table_1);
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				User user = new User();
+				user.setNama(txtName.getText());
+				user.setUsername(txtUsername.getText());
+				user.setPassword(txtPassword.getText());
+				user.setId(id);
+				usr.update(user);
+				reset();
+				loadTable();
+			}
+		});
+		btnUpdate.setBackground(new Color(0, 128, 255));
+		btnUpdate.setFont(new Font("SansSerif", Font.BOLD, 12));
+		btnUpdate.setBounds(272, 156, 75, 25);
+		contentPane.add(btnUpdate);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 200, 416, 232);
+		scrollPane.setViewportView(tableUsers);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		contentPane.add(scrollPane);
+		
+		tableUsers = new JTable();
+		tableUsers.setToolTipText("");
+		tableUsers.setFillsViewportHeight(true);
+		tableUsers.setBackground(new Color(255, 255, 255));
+		tableUsers.setBounds(10, 200, 416, 232);
+		scrollPane.setViewportView(tableUsers);
+		tableUsers.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				id = tableUsers.getValueAt(tableUsers.getSelectedRow(),0).toString();
+				txtName.setText(tableUsers.getValueAt(tableUsers.getSelectedRow(),1).toString());
+				txtUsername.setText(tableUsers.getValueAt(tableUsers.getSelectedRow(),2).toString());
+				txtPassword.setText(tableUsers.getValueAt(tableUsers.getSelectedRow(),3).toString());
+			}
+		});
+		tableUsers.setFont(new Font("SansSerif", Font.PLAIN, 12));
 	}
 }
